@@ -1,7 +1,7 @@
-FROM mickaelguene/arm64-debian 
+FROM resin/amd64-debian
 # Install cron
 RUN apt-get update
-RUN apt-get install -y cron git
+RUN apt-get install -y cron git ssh mysql-client bzip2
 
 # Add crontab file in the cron directory
 ADD crontab /etc/cron.d/simple-cron
@@ -10,6 +10,9 @@ ADD crontab /etc/cron.d/simple-cron
 # Give execution rights on the cron job
 RUN chmod 0644 /etc/cron.d/simple-cron
 #RUN chmod 0644 /etc/cron.d/additional-cron
+
+RUN git config --global user.email "backup@docker.com"
+RUN git config --global user.name "BackupJob"
 
 # Add backup script
 ADD backup.sh /backup.sh
